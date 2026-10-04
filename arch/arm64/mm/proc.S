@@ -215,6 +215,7 @@ ENTRY(idmap_cpu_replace_ttbr1)
 	ret
 ENDPROC(idmap_cpu_replace_ttbr1)
 	.popsection
+	.section ".text.init", "ax"
 
 /*
  *	__cpu_setup

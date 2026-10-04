@@ -845,14 +845,11 @@ static int dvb_dvr_open(struct inode *inode, struct file *file)
 			mutex_unlock(&dmxdev->mutex);
 			return -ENOMEM;
 		}
-		dvb_ringbuffer_init(&dmxdev->dvr_buffer, mem, DVR_BUFFER_SIZE);
-		dvb_dmxdev_flush_events(&dmxdev->dvr_output_events);
-		dmxdev->dvr_output_events.event_mask.disable_mask = 0;
-		dmxdev->dvr_output_events.event_mask.no_wakeup_mask = 0;
-		dmxdev->dvr_output_events.event_mask.wakeup_threshold = 1;
-		dmxdev->dvr_feeds_count = 0;
-		dmxdev->dvr_buffer_mode = DMX_BUFFER_MODE_INTERNAL;
-		dmxdev->dvr_priv_buff_handle = NULL;
+		dmxdev->dvr_buffer.data = mem;
+		dmxdev->dvr_buffer.size = DVR_BUFFER_SIZE;
+		dvb_ringbuffer_reset(&dmxdev->dvr_buffer);
+		dvbdev->readers--;
+	}
 
 		dvbdev->readers--;
 	} else if (!dvbdev->writers) {
